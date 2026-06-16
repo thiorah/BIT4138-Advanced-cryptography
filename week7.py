@@ -1,12 +1,37 @@
-text1 = "HELLO"
-text2 = "HELLo"
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
+from cryptography.hazmat.primitives import hashes
 
-print("Plaintext 1:", text1)
-print("Plaintext 2:", text2)
+# Generate keys
+private_key = rsa.generate_private_key(
+    public_exponent=65537,
+    key_size=2048
+)
 
-if text1 != text2:
-    print("Difference detected")
+public_key = private_key.public_key()
 
-    for i in range(len(text1)):
-        if text1[i] != text2[i]:
-            print("Changed position:", i)
+message = b"Hello Cryptography"
+
+# Sign
+signature = private_key.sign(
+    message,
+    padding.PSS(
+        mgf=padding.MGF1(hashes.SHA256()),
+        salt_length=padding.PSS.MAX_LENGTH
+    ),
+    hashes.SHA256()
+)
+
+print("Digital Signature Generated")
+
+# Verify
+public_key.verify(
+    signature,
+    message,
+    padding.PSS(
+        mgf=padding.MGF1(hashes.SHA256()),
+        salt_length=padding.PSS.MAX_LENGTH
+    ),
+    hashes.SHA256()
+)
+
+print("Signature Verified Successfully")

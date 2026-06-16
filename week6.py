@@ -1,33 +1,21 @@
-# Simple SPN Example
+import hashlib
 
-plaintext = input("Enter plaintext: ")
+username = input("Enter username: ")
+password = input("Enter password: ")
 
-# Substitution
-substitution = {
-    "A":"D",
-    "B":"E",
-    "C":"F",
-    "D":"G"
-}
+# Hash password
+hashed_password = hashlib.sha256(password.encode()).hexdigest()
 
-substituted = ""
+print("\nStored Hash:")
+print(hashed_password)
 
-for char in plaintext:
-    substituted += substitution.get(char, char)
+print("\nLogin")
 
-# Permutation
-ciphertext = substituted[::-1]
+login = input("Enter password again: ")
 
-print("Substituted Text:", substituted)
-print("Ciphertext:", ciphertext)
-sbox = {
-0:14,
-1:4,
-2:13,
-3:1
-}
+login_hash = hashlib.sha256(login.encode()).hexdigest()
 
-print("S-Box Mapping")
-
-for key,value in sbox.items():
-    print(key,"->",value)
+if login_hash == hashed_password:
+    print("Login Successful")
+else:
+    print("Wrong Password")
