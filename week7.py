@@ -1,8 +1,12 @@
-# Differential Analysis
+text1 = "HELLO"
+text2 = "HELLo"
 
-p1 = int(input("Enter first number: "))
-p2 = int(input("Enter second number: "))
+print("Plaintext 1:", text1)
+print("Plaintext 2:", text2)
 
-difference = p1 ^ p2
+if text1 != text2:
+    print("Difference detected")
 
-print("Difference:", difference)
+    for i in range(len(text1)):
+        if text1[i] != text2[i]:
+            print("Changed position:", i)
